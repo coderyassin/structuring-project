@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd
+    	   http://www.springframework.org/schema/jdbc
+           https://www.springframework.org/schema/jdbc/spring-jdbc.xsd" >
+
+    <context:property-placeholder location="classpath:config.properties" />
+
+    <beans:bean id="categoryBean" class="org.yascode.structuringproject.domain.model.Category">
+        <property name="name" value="${category.name}" />
+    </beans:bean>
+
+    <beans:bean id="dateTimeFormatter" class="java.time.format.DateTimeFormatter" factory-method="ofPattern">
+        <constructor-arg value="yyyy-MM-dd'T'HH:mm:ss" />
+    </beans:bean>
+
+    <beans:bean id="localDateTimeBean" class="java.time.LocalDateTime" factory-method="parse">
+        <constructor-arg value="${note.createAt}" />
+        <constructor-arg ref="dateTimeFormatter" />
+    </beans:bean>
+
+    <beans:bean id="noteBean" class="org.yascode.structuringproject.domain.model.Note">
+        <property name="id">
+            <null/>
+        </property>
+        <property name="title" value="${note.title}" />
+        <property name="content" value="${note.content}" />
+        <property name="createAt" ref="localDateTimeBean" />
+        <property name="category" ref="categoryBean" />
+    </beans:bean>
+</beans:beans>
